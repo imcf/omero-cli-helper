@@ -1,8 +1,22 @@
 #!/usr/bin/env python
 
+"""Helper script to generate commands to import a directory tree into OMERO.
+
+Expects a directory hierarchy matching a valid OMERO layout (i.e. two levels of
+directories, the top-level denoting the "Project", the lower level denoting the
+"Dataset". Image files are only accepted inside the dataset directories.
+
+The script will generate the OMERO CLI [1] commands to achieve the following
+steps:
+
+* Create a "Project" with the name of the corresponding directory.
+* The same for every "Dataset" directory in each project.
+* Link every dataset to its corresponding project parent.
+* Import all files inside a dataset directory.
+"""
+
 import sys
 import argparse
-
 from os.path import join
 
 
@@ -22,12 +36,13 @@ def parse_arguments():
         argparser.error(str(err))
     return args
 
+
 def main():
+    """Parse commandline arguments and build commands."""
     args = parse_arguments()
     binomero = join(args.omeropath, 'bin/omero')
 
     tree = {}
-
     for line in args.filelist.readlines():
         try:
             (project, dataset, image) = line.strip().split('/')
