@@ -6,14 +6,15 @@ Expects a directory hierarchy matching a valid OMERO layout (i.e. two levels of
 directories, the top-level denoting the "Project", the lower level denoting the
 "Dataset". Image files are only accepted inside the dataset directories.
 
-The script will generate the OMERO CLI [1] commands to achieve the following
-steps:
+The script will generate the OMERO CLI commands to achieve the following steps:
 
 * Create a "Project" with the name of the corresponding directory.
 * The same for every "Dataset" directory in each project.
 * Link every dataset to its corresponding project parent.
 * Import all files inside a dataset directory.
 """
+
+from __future__ import print_function
 
 import sys
 import argparse
@@ -42,6 +43,8 @@ def main():
     args = parse_arguments()
     binomero = join(args.omeropath, 'bin/omero')
 
+    # assemble the tree structure representing the project/dataset/image
+    # hierarchy to be imported into OMERO:
     tree = {}
     for line in args.filelist.readlines():
         try:
@@ -57,12 +60,12 @@ def main():
 
     args.filelist.close()
 
-    for (proj, datasets) in tree.iteritems():
+    for proj, datasets in tree.iteritems():
         print('PROJ=$(%s obj new Project name="%s")' % (binomero, proj))
         print('echo ----------- $PROJ: %s -----------' % proj)
         for dset in datasets.iterkeys():
             print('DSET=$(%s obj new Dataset name="%s")' % (binomero, dset))
-            print("echo '*** $DSET: %s'" % dset)
+            print("echo '*** $DSET:'", dset)
             print('%s obj new ProjectDatasetLink parent=$PROJ child=$DSET'
                   % binomero)
             for img in datasets[dset]:
