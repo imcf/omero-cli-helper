@@ -58,15 +58,15 @@ def main():
     args.filelist.close()
 
     for (proj, datasets) in tree.iteritems():
-        print('PROJECT=$(%s obj new Project name="%s")' % (binomero, proj))
-        print('echo ----------- $PROJECT: %s -----------' % proj)
+        print('PROJ=$(%s obj new Project name="%s")' % (binomero, proj))
+        print('echo ----------- $PROJ: %s -----------' % proj)
         for dset in datasets.iterkeys():
-            print('DATASET=$(%s obj new Dataset name="%s")' % (binomero, dset))
-            print("echo '*** $DATASET: %s'" % dset)
-            print('%s obj new ProjectDatasetLink parent=$PROJECT child=$DATASET' % binomero)
+            print('DSET=$(%s obj new Dataset name="%s")' % (binomero, dset))
+            print("echo '*** $DSET: %s'" % dset)
+            print('%s obj new ProjectDatasetLink parent=$PROJ child=$DSET'
+                  % binomero)
             for img in datasets[dset]:
                 print('%s import "%s"' % (binomero, join(proj, dset, img)))
-
 
 
 if __name__ == "__main__":
