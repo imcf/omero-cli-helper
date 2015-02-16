@@ -18,15 +18,16 @@ from __future__ import print_function
 
 import sys
 import argparse
-from os.path import join
+from os import walk
+from os.path import join, sep
 
 
 def parse_arguments():
     """Parse commandline arguments."""
     argparser = argparse.ArgumentParser(description=__doc__)
     add = argparser.add_argument
-    add('-f', '--filelist', type=file, required=True,
-        help='File containing list of files to import')
+    add('-t', '--tree', type=str, required=True,
+        help='Root of directory tree to be imported.')
     add('--omeropath', type=str, default='~/OMERO.server',
         help='Full path to your OMERO base directory.')
     # add('-v', '--verbosity', dest='verbosity',
@@ -46,19 +47,17 @@ def main():
     # assemble the tree structure representing the project/dataset/image
     # hierarchy to be imported into OMERO:
     tree = {}
-    for line in args.filelist.readlines():
-        try:
-            (project, dataset, image) = line.strip().split('/')
-        except ValueError:
-            print("WARNING, found irregular line: %s" % line)
-            continue
-        if project not in tree:
-            tree[project] = {}
-        if dataset not in tree[project]:
-            tree[project][dataset] = []
-        tree[project][dataset].append(image)
-
-    args.filelist.close()
+    for dirname, _, files in walk(args.tree):
+        for fname in files:
+            try:
+                _, proj, dset, img = join(dirname, fname).split(sep)
+            except ValueError:
+                raise ValueError("invalid object: %s" % join(dirname, fname))
+            if proj not in tree:
+                tree[proj] = {}
+            if dset not in tree[proj]:
+                tree[proj][dset] = []
+            tree[proj][dset].append(img)
 
     for proj, datasets in tree.iteritems():
         print('PROJ=$(%s obj new Project name="%s")' % (binomero, proj))
