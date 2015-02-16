@@ -10,6 +10,8 @@ def parse_arguments():
     """Parse commandline arguments."""
     argparser = argparse.ArgumentParser(description=__doc__)
     add = argparser.add_argument
+    add('-f', '--filelist', type=file, required=True,
+        help='File containing list of files to import')
     add('--omeropath', type=str, default='~/OMERO.server',
         help='Full path to your OMERO base directory.')
     # add('-v', '--verbosity', dest='verbosity',
@@ -23,11 +25,10 @@ def parse_arguments():
 def main():
     args = parse_arguments()
     binomero = join(args.omeropath, 'bin/omero')
-    fh = open('files.txt')
 
     tree = {}
 
-    for line in fh.readlines():
+    for line in args.filelist.readlines():
         try:
             (project, dataset, image) = line.strip().split('/')
         except ValueError:
@@ -39,7 +40,7 @@ def main():
             tree[project][dataset] = []
         tree[project][dataset].append(image)
 
-    fh.close()
+    args.filelist.close()
 
     for (proj, datasets) in tree.iteritems():
         print('PROJECT=$(%s obj new Project name="%s")' % (binomero, proj))
