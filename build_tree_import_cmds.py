@@ -49,9 +49,9 @@ def main():
         except ValueError:
             print("WARNING, found irregular line: %s" % line)
             continue
-        if not project in tree:
+        if project not in tree:
             tree[project] = {}
-        if not dataset in tree[project]:
+        if dataset not in tree[project]:
             tree[project][dataset] = []
         tree[project][dataset].append(image)
 
