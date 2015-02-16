@@ -41,15 +41,15 @@ def main():
 
     fh.close()
 
-    for (project, datasets) in tree.iteritems():
-        print('PROJECT=$(%s obj new Project name="%s")' % (binomero, project))
-        print('echo ----------- $PROJECT: %s -----------' % project)
-        for dataset in datasets.iterkeys():
-            print('DATASET=$(%s obj new Dataset name="%s")' % (binomero, dataset))
-            print("echo '*** $DATASET: %s'" % dataset)
+    for (proj, datasets) in tree.iteritems():
+        print('PROJECT=$(%s obj new Project name="%s")' % (binomero, proj))
+        print('echo ----------- $PROJECT: %s -----------' % proj)
+        for dset in datasets.iterkeys():
+            print('DATASET=$(%s obj new Dataset name="%s")' % (binomero, dset))
+            print("echo '*** $DATASET: %s'" % dset)
             print('%s obj new ProjectDatasetLink parent=$PROJECT child=$DATASET' % binomero)
-            for image in datasets[dataset]:
-                print('%s import "%s"' % (binomero, join(project, dataset, image)))
+            for img in datasets[dset]:
+                print('%s import "%s"' % (binomero, join(proj, dset, img)))
 
 
 
