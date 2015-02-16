@@ -1,11 +1,28 @@
 #!/usr/bin/env python
 
 import sys
+import argparse
+
 from os.path import join
 
-BIN_OMERO = '~/OMERO.server/bin/omero'
+
+def parse_arguments():
+    """Parse commandline arguments."""
+    argparser = argparse.ArgumentParser(description=__doc__)
+    add = argparser.add_argument
+    add('--omeropath', type=str, default='~/OMERO.server',
+        help='Full path to your OMERO base directory.')
+    # add('-v', '--verbosity', dest='verbosity',
+    #     action='count', default=0)
+    try:
+        args = argparser.parse_args()
+    except IOError as err:
+        argparser.error(str(err))
+    return args
 
 def main():
+    args = parse_arguments()
+    binomero = join(args.omeropath, 'bin/omero')
     fh = open('files.txt')
 
     tree = {}
@@ -25,14 +42,15 @@ def main():
     fh.close()
 
     for (project, datasets) in tree.iteritems():
-        print('PROJECT=$(%s obj new Project name="%s")' % (BIN_OMERO, project))
+        print('PROJECT=$(%s obj new Project name="%s")' % (binomero, project))
         print('echo ----------- $PROJECT: %s -----------' % project)
         for dataset in datasets.iterkeys():
-            print('DATASET=$(%s obj new Dataset name="%s")' % (BIN_OMERO, dataset))
+            print('DATASET=$(%s obj new Dataset name="%s")' % (binomero, dataset))
             print("echo '*** $DATASET: %s'" % dataset)
-            print('%s obj new ProjectDatasetLink parent=$PROJECT child=$DATASET' % BIN_OMERO)
+            print('%s obj new ProjectDatasetLink parent=$PROJECT child=$DATASET' % binomero)
             for image in datasets[dataset]:
-                print('%s import "%s"' % (BIN_OMERO, join(project, dataset, image)))
+                print('%s import "%s"' % (binomero, join(project, dataset, image)))
+
 
 
 if __name__ == "__main__":
