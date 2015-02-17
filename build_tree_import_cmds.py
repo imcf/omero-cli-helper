@@ -71,6 +71,12 @@ def main():
                 print('%s import -d $DSET "%s"' % (binomero, join(proj, dset, img)))
 
 
+# TODO: header for sudo-login:
+"""
+bin/omero login --sudo=<admin> <user>@localhost
+bin/omero sessions group <group_name>
+"""
+
 
 if __name__ == "__main__":
     sys.exit(main())
