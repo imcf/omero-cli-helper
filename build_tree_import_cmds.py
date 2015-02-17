@@ -47,12 +47,14 @@ def main():
     # assemble the tree structure representing the project/dataset/image
     # hierarchy to be imported into OMERO:
     tree = {}
+    wrong = []
     for dirname, _, files in walk(args.tree):
         for fname in files:
             try:
                 _, proj, dset, img = join(dirname, fname).split(sep)
             except ValueError:
-                raise ValueError("invalid object: %s" % join(dirname, fname))
+                wrong.append(join(dirname, fname))
+                continue
             if proj not in tree:
                 tree[proj] = {}
             if dset not in tree[proj]:
