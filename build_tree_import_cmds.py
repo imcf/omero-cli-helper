@@ -42,13 +42,13 @@ def parse_arguments():
 def print_wrong_items(wronglist):
     if len(wronglist) == 0:
         return
-    print('\n', file=sys.stderr)
-    print('###########################################', file=sys.stderr)
-    print('WARNING: found incorrect items in dir tree!', file=sys.stderr)
-    print('###########################################', file=sys.stderr)
+    print('', file=sys.stderr)
+    print('#############################################', file=sys.stderr)
+    print('# WARNING: found incorrect items in dir tree!', file=sys.stderr)
+    print('#############################################', file=sys.stderr)
     for item in wronglist:
         print(item, file=sys.stderr)
-    print('###########################################', file=sys.stderr)
+    print('#############################################', file=sys.stderr)
 
 
 def main():
