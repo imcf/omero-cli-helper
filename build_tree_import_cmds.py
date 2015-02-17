@@ -73,6 +73,13 @@ def main():
                 tree[proj][dset] = []
             tree[proj][dset].append(img)
 
+    # print the header for acting as a shell script
+    print('#!/bin/sh\n')
+    print('#### uncomment these lines and adjust admin/user/group:')
+    print('#', binomero, 'logout')
+    print('#', binomero, 'login --sudo=<admin> -u <user> -s localhost')
+    print('#', binomero, 'sessions group <group_name>\n')
+
     for proj, datasets in tree.iteritems():
         print('PROJ=$(%s obj new Project name="%s")' % (binomero, proj))
         print('echo ----------- $PROJ: %s -----------' % proj)
@@ -86,13 +93,6 @@ def main():
 
     print_wrong_items(wrong)
 
-
-
-# TODO: header for sudo-login:
-"""
-bin/omero login --sudo=<admin> <user>@localhost
-bin/omero sessions group <group_name>
-"""
 
 
 if __name__ == "__main__":
