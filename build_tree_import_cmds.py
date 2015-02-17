@@ -39,6 +39,18 @@ def parse_arguments():
     return args
 
 
+def print_wrong_items(wronglist):
+    if len(wronglist) == 0:
+        return
+    print('\n', file=sys.stderr)
+    print('###########################################', file=sys.stderr)
+    print('WARNING: found incorrect items in dir tree!', file=sys.stderr)
+    print('###########################################', file=sys.stderr)
+    for item in wronglist:
+        print(item, file=sys.stderr)
+    print('###########################################', file=sys.stderr)
+
+
 def main():
     """Parse commandline arguments and build commands."""
     args = parse_arguments()
@@ -71,6 +83,9 @@ def main():
                   % binomero)
             for img in datasets[dset]:
                 print('%s import -d $DSET "%s"' % (binomero, join(proj, dset, img)))
+
+    print_wrong_items(wrong)
+
 
 
 # TODO: header for sudo-login:
