@@ -68,7 +68,8 @@ def main():
             print('%s obj new ProjectDatasetLink parent=$PROJ child=$DSET'
                   % binomero)
             for img in datasets[dset]:
-                print('%s import "%s"' % (binomero, join(proj, dset, img)))
+                print('%s import -d $DSET "%s"' % (binomero, join(proj, dset, img)))
+
 
 
 if __name__ == "__main__":
