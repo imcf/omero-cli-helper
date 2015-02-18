@@ -75,7 +75,7 @@ def main():
             tree[proj][dset].append(img)
 
     # print the header for acting as a shell script
-    print('#!/bin/sh\n')
+    print('#!/bin/sh\n\nset -x\nset -e\n\n')
     print('#### uncomment these lines and adjust admin/user/group:')
     print('#', binomero, 'logout')
     print('#', binomero, 'login --sudo=<admin> -u <user> -s localhost')
