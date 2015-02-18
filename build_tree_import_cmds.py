@@ -82,6 +82,7 @@ def main():
     print('#', binomero, 'sessions group <group_name>\n')
 
     for proj, datasets in tree.iteritems():
+        print('\n###########################################################\n')
         print('PROJ=$(%s obj new Project name="%s")' % (binomero, proj))
         print('echo ----------- $PROJ: %s -----------' % proj)
         for dset in datasets.iterkeys():
