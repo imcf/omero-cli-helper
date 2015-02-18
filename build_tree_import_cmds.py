@@ -21,6 +21,7 @@ import argparse
 from os import walk
 from os.path import join, sep
 
+BLKMARK = '################################################################'
 
 def parse_arguments():
     """Parse commandline arguments."""
@@ -44,12 +45,12 @@ def print_wrong_items(wronglist):
     if len(wronglist) == 0:
         return
     print('', file=sys.stderr)
-    print('#############################################', file=sys.stderr)
+    print(BLKMARK, file=sys.stderr)
     print('# WARNING: found incorrect items in dir tree!', file=sys.stderr)
-    print('#############################################', file=sys.stderr)
+    print(BLKMARK, file=sys.stderr)
     for item in wronglist:
         print(item, file=sys.stderr)
-    print('#############################################', file=sys.stderr)
+    print(BLKMARK, file=sys.stderr)
 
 
 def main():
@@ -82,7 +83,7 @@ def main():
     print('#', binomero, 'sessions group <group_name>\n')
 
     for proj, datasets in tree.iteritems():
-        print('\n###########################################################\n')
+        print('\necho\necho "', BLKMARK, BLKMARK, '"\necho\n')
         print('PROJ=$(%s obj new Project name="%s")' % (binomero, proj))
         print('echo ----------- $PROJ: %s -----------' % proj)
         for dset in datasets.iterkeys():
