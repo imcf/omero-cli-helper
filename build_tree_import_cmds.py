@@ -28,7 +28,7 @@ def parse_arguments():
     add = argparser.add_argument
     add('-t', '--tree', type=str, required=True,
         help='Root of directory tree to be imported.')
-    add('--omeropath', type=str, default='~/OMERO.server',
+    add('--omeropath', type=str, default='$HOME/OMERO.server',
         help='Full path to your OMERO base directory.')
     # add('-v', '--verbosity', dest='verbosity',
     #     action='count', default=0)
