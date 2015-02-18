@@ -22,6 +22,7 @@ from os import walk
 from os.path import join, sep
 
 BLKMARK = '################################################################'
+DSHMARK = '----------------------------------------------------------------'
 
 HEADER = '''#!/bin/sh
 
@@ -96,7 +97,7 @@ def main():
     for proj, datasets in tree.iteritems():
         print('\necho\necho "', BLKMARK, BLKMARK, '"\necho\n')
         print('PROJ=$(%s obj new Project name="%s")' % (binomero, proj))
-        print('echo ----------- $PROJ: %s -----------' % proj)
+        print('echo "', DSHMARK, '$PROJ: %s' % proj, DSHMARK, '"')
         for dset in datasets.iterkeys():
             print('DSET=$(%s obj new Dataset name="%s")' % (binomero, dset))
             print('echo "*** $DSET: %s"' % dset)
