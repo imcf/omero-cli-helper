@@ -97,12 +97,12 @@ def main():
 
     for proj, datasets in tree.iteritems():
         print('\necho\necho "', BLKMARK, BLKMARK, '"\necho\n')
-        print('PROJ=$(%s obj new Project name="%s")' % (binomero, proj))
+        print('PROJ=$("%s" obj new Project name="%s")' % (binomero, proj))
         print('echo "', DSHMARK, '$PROJ: %s' % proj, DSHMARK, '"')
         for dset in datasets.iterkeys():
-            print('DSET=$(%s obj new Dataset name="%s")' % (binomero, dset))
+            print('DSET=$("%s" obj new Dataset name="%s")' % (binomero, dset))
             print('echo "', STRMARK, '$DSET: %s"' % dset)
-            print('%s obj new ProjectDatasetLink parent=$PROJ child=$DSET'
+            print('"%s" obj new ProjectDatasetLink parent=$PROJ child=$DSET'
                   % binomero)
             for img in datasets[dset]:
                 print('%s import -d $DSET "%s"' % (binomero, join(proj, dset, img)))
