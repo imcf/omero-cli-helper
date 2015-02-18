@@ -23,6 +23,7 @@ from os.path import join, sep
 
 BLKMARK = '################################################################'
 DSHMARK = '----------------------------------------------------------------'
+STRMARK = '****************************************************************'
 
 HEADER = '''#!/bin/sh
 
@@ -100,7 +101,7 @@ def main():
         print('echo "', DSHMARK, '$PROJ: %s' % proj, DSHMARK, '"')
         for dset in datasets.iterkeys():
             print('DSET=$(%s obj new Dataset name="%s")' % (binomero, dset))
-            print('echo "*** $DSET: %s"' % dset)
+            print('echo "', STRMARK, '$DSET: %s"' % dset)
             print('%s obj new ProjectDatasetLink parent=$PROJ child=$DSET'
                   % binomero)
             for img in datasets[dset]:
