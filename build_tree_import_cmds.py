@@ -40,6 +40,7 @@ def parse_arguments():
 
 
 def print_wrong_items(wronglist):
+    """Print the list of invalid file items in the directory tree."""
     if len(wronglist) == 0:
         return
     print('', file=sys.stderr)
