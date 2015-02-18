@@ -87,7 +87,7 @@ def main():
         print('echo ----------- $PROJ: %s -----------' % proj)
         for dset in datasets.iterkeys():
             print('DSET=$(%s obj new Dataset name="%s")' % (binomero, dset))
-            print("echo '*** $DSET:'", dset)
+            print('echo "*** $DSET: %s"' % dset)
             print('%s obj new ProjectDatasetLink parent=$PROJ child=$DSET'
                   % binomero)
             for img in datasets[dset]:
