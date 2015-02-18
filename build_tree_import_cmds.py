@@ -33,6 +33,13 @@ set -e
 BINOMERO="%s"
 DTSTRING=$(date +%%F_%%H%%M)
 
+omero_import_file() {
+    INFOSTR="$1 $2 \\"$3\\""
+    echo "$INFOSTR" > import_${DTSTRING}_current_file
+    "$BINOMERO" import -d $2 "$3"
+    echo "$INFOSTR" >> import_${DTSTRING}_done_files
+}
+
 #### uncomment these lines and adjust admin/user/group:
 # "$BINOMERO" logout
 # "$BINOMERO" login --sudo=<admin> -u <user> -s localhost
@@ -107,7 +114,7 @@ def main():
             print('"%s" obj new ProjectDatasetLink parent=$PROJ child=$DSET'
                   % binomero)
             for img in datasets[dset]:
-                print('%s import -d $DSET "%s"' % (binomero, join(proj, dset, img)))
+                print('omero_import_file $PROJ $DSET "%s"' % join(proj, dset, img))
             print('echo $DSET >> import_${DTSTRING}_done_datasets')
         print('echo $PROJ >> import_${DTSTRING}_done_projects')
 
