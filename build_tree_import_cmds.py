@@ -99,13 +99,17 @@ def main():
         print('\necho\necho "', BLKMARK, BLKMARK, '"\necho\n')
         print('PROJ=$("%s" obj new Project name="%s")' % (binomero, proj))
         print('echo "', DSHMARK, '$PROJ: %s' % proj, DSHMARK, '"')
+        print('echo $PROJ > import_${DTSTRING}_current_project')
         for dset in datasets.iterkeys():
             print('DSET=$("%s" obj new Dataset name="%s")' % (binomero, dset))
             print('echo "', STRMARK, '$DSET: %s"' % dset)
+            print('echo $DSET > import_${DTSTRING}_current_dataset')
             print('"%s" obj new ProjectDatasetLink parent=$PROJ child=$DSET'
                   % binomero)
             for img in datasets[dset]:
                 print('%s import -d $DSET "%s"' % (binomero, join(proj, dset, img)))
+            print('echo $DSET >> import_${DTSTRING}_done_datasets')
+        print('echo $PROJ >> import_${DTSTRING}_done_projects')
 
     print_wrong_items(wrong)
 
