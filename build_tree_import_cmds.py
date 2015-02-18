@@ -23,6 +23,21 @@ from os.path import join, sep
 
 BLKMARK = '################################################################'
 
+HEADER = '''#!/bin/sh
+
+set -x
+set -e
+
+BINOMERO="%s"
+DTSTRING=$(date +%%F_%%H%%M)
+
+#### uncomment these lines and adjust admin/user/group:
+# "$BINOMERO" logout
+# "$BINOMERO" login --sudo=<admin> -u <user> -s localhost
+# "$BINOMERO" sessions group <group_name>
+'''
+
+
 def parse_arguments():
     """Parse commandline arguments."""
     argparser = argparse.ArgumentParser(description=__doc__)
@@ -75,12 +90,8 @@ def main():
                 tree[proj][dset] = []
             tree[proj][dset].append(img)
 
-    # print the header for acting as a shell script
-    print('#!/bin/sh\n\nset -x\nset -e\n\n')
-    print('#### uncomment these lines and adjust admin/user/group:')
-    print('#', binomero, 'logout')
-    print('#', binomero, 'login --sudo=<admin> -u <user> -s localhost')
-    print('#', binomero, 'sessions group <group_name>\n')
+    # print the script header with functions and global vars
+    print(HEADER % binomero)
 
     for proj, datasets in tree.iteritems():
         print('\necho\necho "', BLKMARK, BLKMARK, '"\necho\n')
