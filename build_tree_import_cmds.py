@@ -34,10 +34,12 @@ BINOMERO="%s"
 DTSTRING=$(date +%%F_%%H%%M)
 
 omero_import_file() {
-    INFOSTR="$1 $2 \\"$3\\""
-    echo "$INFOSTR" > import_${DTSTRING}_current_file
-    "$BINOMERO" import -d $2 "$3"
-    echo "$INFOSTR" >> import_${DTSTRING}_done_files
+    PROJ=$(cat _cur_project)
+    DSET=$(cat _cur_dset)
+    echo "$1" > _cur_filename
+    "$BINOMERO" import -d $DSET "$1"
+    echo "$1" >> _done_filenames
+    rm _cur_filename
 }
 
 #### uncomment these lines and adjust admin/user/group:
@@ -104,19 +106,26 @@ def main():
 
     for proj, datasets in tree.iteritems():
         print('\necho\necho "', BLKMARK, BLKMARK, '"\necho\n')
-        print('PROJ=$("%s" obj new Project name="%s")' % (binomero, proj))
-        print('echo "', DSHMARK, '$PROJ: %s' % proj, DSHMARK, '"')
-        print('echo $PROJ > import_${DTSTRING}_current_project')
+        print('PROJ_NAME="%s"' % proj)
+        print('"$BINOMERO" obj new Project name="$PROJ_NAME" > _cur_project')
+        print('PROJ=$(cat _cur_project)')
+        print('echo "', DSHMARK, '$PROJ: $PROJ_NAME', DSHMARK, '"')
         for dset in datasets.iterkeys():
-            print('DSET=$("%s" obj new Dataset name="%s")' % (binomero, dset))
-            print('echo "', STRMARK, '$DSET: %s"' % dset)
-            print('echo $DSET > import_${DTSTRING}_current_dataset')
-            print('"%s" obj new ProjectDatasetLink parent=$PROJ child=$DSET'
-                  % binomero)
+            print('DSET_NAME="%s"' % dset)
+            print('"$BINOMERO" obj new Dataset name="$DSET_NAME" > _cur_dset')
+            print('DSET=$(cat _cur_dset)')
+            print('echo "', STRMARK, '$DSET: $DSET_NAME"')
+            print('"$BINOMERO" obj new ProjectDatasetLink',
+                  'parent=$PROJ child=$DSET')
             for img in datasets[dset]:
-                print('omero_import_file $PROJ $DSET "%s"' % join(proj, dset, img))
-            print('echo $DSET >> import_${DTSTRING}_done_datasets')
-        print('echo $PROJ >> import_${DTSTRING}_done_projects')
+                print('omero_import_file "%s"' % join(proj, dset, img))
+            print('echo "$DSET_NAME" >> _done_dsets_names')
+            print('cat _cur_dset >> _done_dsets_ids')
+            print('rm _cur_dset')
+
+        print('echo "$PROJ_NAME" >> _done_projects_names')
+        print('cat _cur_project >> _done_projects_ids')
+        print('rm _cur_project')
 
     print_wrong_items(wrong)
 
